@@ -23,35 +23,7 @@ struct ContentView: View {
             }
             
             Spacer()
-            
-            HStack {
-                addButton
-                Spacer()
-                removeButton
-            }
-            .padding()
         }
-    }
-    
-    var addButton: some View {
-        Button(action: {
-            if emojisCount < emojis.count {
-                emojisCount += 1
-            }
-        }) {
-            Image(systemName: "plus.circle")
-                .font(.largeTitle)
-        }
-    }
-    
-    var removeButton: some View {
-        Button(action: {
-            if emojisCount > 0 {
-                emojisCount -= 1
-            }
-        }) {
-            Image(systemName: "minus.circle")
-                .font(.largeTitle)}
     }
 }
 
@@ -86,10 +58,6 @@ struct CardView: View {
         }
     }
 }
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
