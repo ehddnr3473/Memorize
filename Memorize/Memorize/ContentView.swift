@@ -8,22 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎", "🚓", "🚑", "🚒", "🚐", "🛻", "🚚"]
-    @State var emojisCount: Int = 6
-    
+    @ObservedObject var viewModel: EmojiMemoryGame
     var body: some View {
-        VStack {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                    ForEach(emojis[0..<emojisCount], id: \.self) { emoji in
-                        CardView(emoji: emoji)
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
+                    ForEach(viewModel.cards) { card in
+                        CardView(card: card)
                             .aspectRatio(2/3, contentMode: .fit)
+                            .onTapGesture {
+                                viewModel.choose(card)
+                            }
                     }
-                }
+                }.padding()
             }
-            
-            Spacer()
-        }
     }
 }
 
@@ -31,13 +28,12 @@ struct ContentView: View {
 
 
 struct CardView: View {
-    @State var isFaceUp: Bool = false
-    var emoji: String
-    var shape = RoundedRectangle(cornerRadius: 25)
+    let card: MemoryGame<String>.Card
     
     var body: some View {
         ZStack {
-            if isFaceUp {
+            let shape = RoundedRectangle(cornerRadius: 25)
+            if card.isFaceUp {
                 shape
                     .fill()
                     .foregroundColor(.white)
@@ -46,21 +42,20 @@ struct CardView: View {
                     .strokeBorder(lineWidth: 3)
                     .foregroundColor(.red)
                 
-                Text(emoji)
+                Text(card.content)
                     .font(.largeTitle)
             } else {
                 shape
                     .fill()
                     .foregroundColor(.red)
             }
-        }.onTapGesture {
-            isFaceUp = !isFaceUp
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame()
+        ContentView(viewModel: game)
     }
 }
