@@ -30,29 +30,15 @@ struct CardView: View {
         // GeometryReader로 CardView의 크기를 계산
         GeometryReader { geometry in
             ZStack {
-                let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
-                if card.isFaceUp {
-                    shape
-                        .fill()
-                        .foregroundColor(.white)
-                    
-                    shape
-                        .strokeBorder(lineWidth: DrawingConstants.lineWidth)
-                        .foregroundColor(.red)
-                    
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 120-90))
                         .padding(5)
                         .foregroundColor(.red)
                         .opacity(0.5)
-                    
+
                     Text(card.content)
                         .font(font(in: geometry.size))
-                } else {
-                    shape
-                        .fill()
-                        .foregroundColor(.red)
-                }
             }
+            .cardify(isFaceUp: card.isFaceUp)
         }
     }
     
@@ -63,8 +49,6 @@ struct CardView: View {
 
 // Magic Number
 private struct DrawingConstants {
-    static let cornerRadius: CGFloat = 10
-    static let lineWidth: CGFloat = 3
     static let fontScale: CGFloat = 0.70
 }
 
