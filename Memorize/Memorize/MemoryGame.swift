@@ -15,13 +15,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         set { cards.indices.forEach { cards[$0].isFaceUp = ($0 == newValue) } }
     }
     
+    // Logic of MemoryGame
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: {  $0.id == card.id }),
            !cards[chosenIndex].isFaceUp,
            !cards[chosenIndex].isMatched
         {
             if let potentialMatchedIndex = indexOfTheOneAndOnlyFaceUpCard {
-                if cards[potentialMatchedIndex].content == cards[chosenIndex].content {
+                if cards[potentialMatchedIndex].content == cards[chosenIndex].content { // content: CardContent -> + where CardContent: Equatable
                     cards[potentialMatchedIndex].isMatched = true
                     cards[chosenIndex].isMatched = true
                 }
@@ -44,10 +45,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         var isFaceUp = false
         var isMatched = false
         let content: CardContent
-        let id: Int
+        let id: Int // For identifiable
     }
 }
 
+// extension of struct
+// self.count, self.first
 extension Array {
     var oneAndOnly: Element? {
         if count == 1 {
